@@ -1,0 +1,16 @@
+﻿@model asm1appdev.Models.Course
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>CouersDetails</h2>
+
+@Html.ActionLink("Black to My Courses","Index", "Courses", null, new { @class = "btn btn-primary"})
+
+<ul>
+    <li>@Model.Id</li>
+    <li>@Model.Name</li>
+    <li>@Model.Description</li>
+</ul>
+
