@@ -37,6 +37,8 @@
                 <td>@item.Description</td>
                 <td>@item.Category.Name</td>
                 <td>
+                    @Html.ActionLink("ViewAssign", "Index", "Assign",
+                    new { id = item.Id }, new { @class = "btn btn-primary" })
                     @Html.ActionLink("Details", "Details", "Courses",
                               new { id = item.Id },
                               new { @class = "btn btn-primary" })

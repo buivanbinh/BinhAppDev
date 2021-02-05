@@ -1,0 +1,41 @@
+﻿@model asm1appdev.Models.Trainee
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Profile of this trainee</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr style="background-color: #8DC7C7 ; text-align:center">
+            <th>E-mail</th>
+            <th>Full name</th>
+            <th>Age</th>
+            <th>Day Of Birth</th>
+            <th>Education</th>
+            <th>ProgramingLanguage</th>
+            <th>ToeicScore</th>
+            <th>Experience</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="text-align:center">
+            <td>@Model.ApplicationUser.UserName</td>
+            <td>@Model.ApplicationUser.FullName</td>
+            <td>@Model.Age</td>
+            <td>@Model.DayOfBirth</td>
+            <td>@Model.Education</td>
+            <td>@Model.ProgramingLanguage</td>
+            <td>@Model.ToeicScore</td>
+            <td>@Model.Experience</td>
+            <td>@Model.Location</td>
+
+
+        </tr>
+    </tbody>
+</table>
+@Html.ActionLink("Back to Trainees' Index", "Index", "Trainees",
+    null,
+    new { @class = "btn btn-primary" })
+

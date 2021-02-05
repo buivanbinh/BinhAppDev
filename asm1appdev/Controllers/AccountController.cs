@@ -9,17 +9,20 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using asm1appdev.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace asm1appdev.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext _context;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public AccountController()
         {
+            _context = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -136,16 +139,20 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        /*[Authorize(Roles = "admin,staff")]*/
         public ActionResult Register()
         {
+            if (User.IsInRole("admin"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("staff") || r.Name.Equals("trainer")).ToList();
+            if (User.IsInRole("staff"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("trainee")).ToList();
             return View();
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        /*[Authorize(Roles = "admin,staff")]*/
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -153,17 +160,44 @@ namespace asm1appdev.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+                var userStore = new UserStore<ApplicationUser>(_context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+
+
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    userManager.AddToRole(user.Id, model.RoleName);
+                    if (model.RoleName == "trainer")
+                    {
+                        var newTrainer = new Trainer();
+                        newTrainer.TrainerId = user.Id;
+                        _context.Trainers.Add(newTrainer);
+                        _context.SaveChanges();
+                        return RedirectToAction("Index", "Trainers");
+                    }
+                    else if (model.RoleName == "trainee")
+                    {
+                        if (User.IsInRole("staff"))
+                        {
+                            var newTrainee = new Trainee();
+                            newTrainee.TraineeId = user.Id;
+                            _context.Trainees.Add(newTrainee);
+                            _context.SaveChanges();
+                            return RedirectToAction("Index", "Trainees");
+                        }
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else return RedirectToAction("Index", "Home");
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    /*return RedirectToAction("Index", "Home");*/
                 }
                 AddErrors(result);
             }

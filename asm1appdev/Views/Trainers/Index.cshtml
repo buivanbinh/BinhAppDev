@@ -1,0 +1,58 @@
+﻿@model IEnumerable<asm1appdev.Models.Trainer>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align: center">Trainers Index</h2>
+
+@Html.ActionLink("Create new Account Trainer", "Register", "Account", null, new { @class = "btn btn-danger", style = "margin :10px" })
+@using (Html.BeginForm("Index", "Trainers", "POST"))
+{
+    <div>
+        <label>Search by Trainer's  :</label>
+        @Html.TextBox("searchInput", null,
+           new { @class = "form-control", Style = "margin: 10px" })
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Full name</th>
+            <th>Phone number</th>
+            <th>Type</th>
+            <th>Working Place</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.ApplicationUser.UserName</th>
+                <th>@item.ApplicationUser.FullName</th>
+                <td>@item.PhoneNumber</td>
+                <td>@item.Type</td>
+                <td>@item.WorkingPlace</td>
+                <td>
+                    @Html.ActionLink("Details profile", "Details", "Trainers",
+                                                          new { id = item.TrainerId },
+                                                          new { @class = "btn btn-primary", style = "margin :10px" })
+                    @Html.ActionLink("Edit profile", "Update", "Trainers",
+                                                          new { id = item.TrainerId },
+                                                          new { @class = "btn btn-danger", style = "margin :10px" })
+                    @Html.ActionLink("Delete trainer", "Delete", "Trainers",
+                                                          new { id = item.TrainerId },
+                                                          new { @class = "btn btn-primary", style = "margin :10px" })
+                    @Html.ActionLink("Reset & enter new password ", "ResetPassword", "Account",
+                                                          new { id = item.ApplicationUser.Id },
+                                                          new { @class = "btn btn-danger", style = "margin :10px" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

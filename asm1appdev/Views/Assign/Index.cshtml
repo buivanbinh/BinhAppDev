@@ -1,0 +1,97 @@
+﻿@model asm1appdev.ViewModels.TrainersTraineesCourseViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 style="text-align:center ;text-transform: uppercase"> Course: @Model.Course.Name</h2>
+
+@Html.ActionLink("Assign Trainer to Course", "CreateTrainerAssign", "Assign",
+                                          new { id = Model.Course.Id },
+                                          new
+                                          {
+                                              @class = "btn btn-danger",
+                                              style = "margin-bottom :20px",
+                                               })
+
+
+<table class="table table-bordered">
+    <thead style="background-color: antiquewhite">
+        <tr>
+            <th style="text-align : center">UserName</th>
+            <th style="text-align : center">FullName</th>
+            <th style="text-align : center">Action</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @foreach (var item in Model.Trainers)
+        {
+            <tr>
+                <td>@item.ApplicationUser.UserName</td>
+                <td>@item.ApplicationUser.FullName</td>
+
+                <td>
+                    @using (Html.BeginForm("DeleteTrainerAssign", "Assign", "POST"))
+                    {
+                        <div>
+                            <input type="hidden" name="CourseId" value="@Model.Course.Id">
+                            <input type="hidden" name="TrainerId" value="@item.TrainerId">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="margin-bottom: 20px">Delete Trainer Assign</button>
+                        </div>
+                    }
+                    @Html.ActionLink("Change Trainer Assign", "ChangeTrainerAssign", "Assign",
+                                     new { CourseId = Model.Course.Id, TrainerId = item.TrainerId },
+                                     new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Assign Trainee to Course", "CreateTraineeAssign", "Assign",
+                                          new { id = Model.Course.Id },
+                                          new
+                                          {
+                                              @class = "btn btn-danger",
+                                              style = "margin-bottom :20px"
+                                          })
+<table class="table table-bordered">
+    <thead style="background-color: antiquewhite">
+        <tr>
+            <th style="text-align : center">UserName</th>
+            <th style="text-align : center">FullName</th>
+            <th style="text-align : center">Action</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @foreach (var item in Model.Trainees)
+        {
+            <tr>
+                <td>@item.ApplicationUser.UserName</td>
+                <td>@item.ApplicationUser.FullName</td>
+                <td>
+                    @using (Html.BeginForm("DeleteTraineeAssign", "Assign", "POST"))
+                    {
+                        <div>
+                            <input type="hidden" name="CourseId" value="@Model.Course.Id">
+                            <input type="hidden" name="TraineeId" value="@item.TraineeId">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary" style="margin-bottom :20px">Delete Trainee Assign</button>
+                        </div>
+                    }
+                    @Html.ActionLink("Change Trainee Assign", "ChangeTraineeAssign", "Assign",
+                                     new
+                                          {
+                                              CourseId = Model.Course.Id,
+                                          TraineeId = item.TraineeId
+                                          },
+                                     new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.ActionLink("Back to Courses Index", "Index", "Courses",
+  new { id = Model.Course.Id },
+  new { @class = "btn btn-primary" })

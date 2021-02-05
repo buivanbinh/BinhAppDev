@@ -1,0 +1,40 @@
+﻿@model asm1appdev.ViewModels.ChangeAssignTrainee
+@{
+    ViewBag.Title = "ChangeTraineeAssign";
+}
+
+<h2>ChangeTraineeAssign</h2>
+<div>
+    <p>List Course</p>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Change Trainee Assign</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Courses)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>
+                    @using (Html.BeginForm("ChangeTraineeAssign", "Assign", "POST"))
+                    {
+                        <div class="form-group">
+                            <input type="hidden" name="CourseId" value="@item.Id">
+                            <input type="hidden" name="TrainerId" value="@Model.Trainee.TraineeId">
+                        </div>
+                        <div>
+                            <button>Change</button>
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

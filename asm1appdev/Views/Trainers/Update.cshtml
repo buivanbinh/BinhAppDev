@@ -1,0 +1,43 @@
+﻿@model asm1appdev.Models.Trainer
+@{
+    ViewBag.Title = "Update";
+}
+
+<h2>Edit Trainer Profile</h2>
+
+@using (Html.BeginForm("Update", "Trainers", "POST"))
+{
+
+    @Html.HiddenFor(model => model.TrainerId)
+
+    <div>
+        @Html.LabelFor(model => model.ApplicationUser.FullName)
+        @Html.TextAreaFor(model => model.ApplicationUser.FullName, new { @class = "form-control", style = "width:350px" })
+    </div>
+
+
+    <div>
+        @Html.LabelFor(model => model.PhoneNumber)
+        @Html.TextBoxFor(model => model.PhoneNumber, new
+        {
+            @class = "form-control",@*style = "width:350px"*@})
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.WorkingPlace)
+        @Html.TextAreaFor(model => model.WorkingPlace, new
+        {
+            @class = "form-control",@*style = "width:350px"*@})
+    </div>
+
+    <div>
+        @Html.LabelFor(model => model.Type)
+        @Html.EnumDropDownListFor(model => model.Type, new
+        {
+            @class = "form-control",@*style = "width:350px" *@})
+    </div>
+
+    <div>
+        <button type="submit">Confirm changes</button>
+    </div>
+}

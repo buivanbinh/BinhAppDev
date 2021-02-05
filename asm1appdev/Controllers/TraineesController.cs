@@ -33,7 +33,7 @@ namespace asm1appdev.Controllers
             var traineeInDb = _context.Trainees.SingleOrDefault(t => t.TraineeId == id);
             return View(traineeInDb);
         }
-
+        [HttpGet]
         public ActionResult Update(string id)
         {
             var traineeInDb = _context.Trainees.SingleOrDefault(t => t.TraineeId == id);
@@ -52,7 +52,7 @@ namespace asm1appdev.Controllers
             }
             var traineeInDb = _context.Trainees.SingleOrDefault(t => t.TraineeId == trainee.TraineeId);
             {
-                traineeInDb.ApplicationUser.UserName = trainee.ApplicationUser.UserName;
+                traineeInDb.ApplicationUser.FullName = trainee.ApplicationUser.FullName;
                 traineeInDb.Age = trainee.Age;
                 traineeInDb.DayOfBirth = trainee.DayOfBirth;
                 traineeInDb.Education = trainee.Education;

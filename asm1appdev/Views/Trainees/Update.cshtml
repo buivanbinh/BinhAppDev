@@ -1,0 +1,56 @@
+﻿@model asm1appdev.Models.Trainee
+@{
+    ViewBag.Title = "Update";
+}
+
+<h2>Edit trainee's profile</h2>
+
+@using (Html.BeginForm("Update", "Trainees", "POST"))
+{
+
+    @Html.HiddenFor(model => model.TraineeId)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ApplicationUser.FullName)
+        @Html.TextAreaFor(model => model.ApplicationUser.FullName, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Age)
+        @Html.TextAreaFor(model => model.Age, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DayOfBirth)
+        @Html.TextAreaFor(model => model.DayOfBirth, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Experience)
+        @Html.TextAreaFor(model => model.Experience, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ProgramingLanguage)
+        @Html.TextAreaFor(model => model.ProgramingLanguage, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Education)
+        @Html.TextAreaFor(model => model.Education, new { @class = "form-control", style = "width:350px" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ToeicScore)
+        @Html.TextAreaFor(model => model.ToeicScore, new { @class = "form-control", style = "width:350px" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Location)
+        @Html.TextAreaFor(model => model.Location, new { @class = "form-control", style = "width:350px" })
+    </div>
+
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Confirm changes</button>
+    </div>
+}
