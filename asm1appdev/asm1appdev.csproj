@@ -173,6 +173,7 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Controllers\TraineesController.cs" />
     <Compile Include="Controllers\TrainersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -202,12 +203,18 @@
     <Compile Include="Migrations\202102041517003_UpdateRegister.Designer.cs">
       <DependentUpon>202102041517003_UpdateRegister.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102200926124_Staffs.cs" />
+    <Compile Include="Migrations\202102200926124_Staffs.Designer.cs">
+      <DependentUpon>202102200926124_Staffs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Course.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Staff.cs" />
     <Compile Include="Models\Trainee.cs" />
     <Compile Include="Models\Trainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -295,6 +302,7 @@
     <Content Include="Views\Assign\ChangeTraineeAssign.cshtml" />
     <Content Include="Views\Assign\CreateTraineeAssign.cshtml" />
     <Content Include="Views\Assign\ChangeTrainerAssign.cshtml" />
+    <Content Include="Views\Staffs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -330,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102041517003_UpdateRegister.resx">
       <DependentUpon>202102041517003_UpdateRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102200926124_Staffs.resx">
+      <DependentUpon>202102200926124_Staffs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

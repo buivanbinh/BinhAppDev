@@ -1,0 +1,48 @@
+﻿@model IEnumerable<asm1appdev.Models.Staff>
+@{ ViewBag.Title = "Index";
+}
+
+<h2>Staffs' Index</h2>
+@using (Html.BeginForm("Index", "Staffs", "POST"))
+{
+    <div class="form-group">
+        <label for="fname">Search by Staff Name:</label><br>
+        @Html.TextBox("searchInput", null, new { @class = "form-control", style = "margin :10px" })
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Full name</th>
+            <th>Age</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ApplicationUser.UserName</td>
+                <td>@item.ApplicationUser.FullName</td>
+                <td>@item.Age</td>
+                <td>@item.Location</td>
+                <td>
+                    @Html.ActionLink("Edit profile", "Update", "Staffs",
+                                                          new { id = item.StaffId },
+                                                          new { @class = "btn btn-danger", style = "margin :10px" })
+                    @Html.ActionLink("Delete staff account", "Delete", "Staffs",
+                                                          new { id = item.StaffId },
+                                                          new { @class = "btn btn-primary", style = "margin :10px" })
+                    @Html.ActionLink("Reset & enter new password", "ResetPassword", "Account",
+                                                          new { id = item.ApplicationUser.Id },
+                                                          new { @class = "btn btn-danger", style = "margin :10px" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

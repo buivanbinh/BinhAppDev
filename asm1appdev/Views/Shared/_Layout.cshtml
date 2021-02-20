@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - FPTApp</title>
+    <title>@ViewBag.Title - APS FPT </title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -17,15 +17,41 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("FPT.GW", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("APSFPT", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Course", "Index", "Courses")</li>
-                    <li>@Html.ActionLink("Category", "Index", "Categories")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (User.IsInRole("staff"))
+                    {
+
+                        <li class="nav-item">@Html.ActionLink("Trainer", "Index", "Trainers", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Trainee", "Index", "Trainees", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Course", "Index", "Courses", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Category", "Index", "Categories", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { Style = "color:white" })</li>
+                    }
+                    @if (User.IsInRole("trainer"))
+                    {
+                        <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourse", "Account", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Profile", "ViewProfile", "Account", null, new { Style = "color:white" })</li>
+
+                        <li class="nav-item">@Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null, new { Style = "color:white" })</li>
+                    }
+                    @if (User.IsInRole("trainee"))
+                    {
+                        <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourse", "Account", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Profile", "ViewProfile", "Account", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null, new { Style = "color:white" })</li>
+                    }
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item">@Html.ActionLink("Account Staff", "Index", "Staffs", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Account Trainer", "Index", "Trainers", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { Style = "color:white" })</li>
+                    }
+
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -35,7 +61,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year -  APS FPT</p>
         </footer>
     </div>
 
