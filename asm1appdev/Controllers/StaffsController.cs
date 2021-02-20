@@ -1,12 +1,11 @@
-﻿using APSDevApp.Models;
-using asm1appdev.Models;
+﻿using asm1appdev.Models;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace APSDevApp.Controllers
+namespace asm1appdev.Controllers
 {
     public class StaffsController : Controller
     {

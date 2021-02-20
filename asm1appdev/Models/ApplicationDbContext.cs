@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using APSDevApp.Models;
+using asm1appdev.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace asm1appdev.Models
