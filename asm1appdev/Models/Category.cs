@@ -21,5 +21,6 @@ namespace asm1appdev.Models
         [DisplayName("Category Description")]
 
         public string Description { get; set; }
+        
     }
 }

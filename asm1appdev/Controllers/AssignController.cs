@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace asm1appdev.Controllers
 {
+    [Authorize(Roles = "Staff")]
     public class AssignController : Controller
     {
         

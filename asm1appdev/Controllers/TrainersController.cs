@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace asm1appdev.Controllers
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class TrainersController : Controller
     {
         public ApplicationDbContext _context;

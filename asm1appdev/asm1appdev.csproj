@@ -232,6 +232,7 @@
     <Compile Include="ViewModels\StarffViewModel.cs" />
     <Compile Include="ViewModels\TrainerCourseViewModel.cs" />
     <Compile Include="ViewModels\TrainersTraineesCourseViewModel.cs" />
+    <Compile Include="ViewModels\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -309,6 +310,9 @@
     <Content Include="Views\Assign\ChangeTrainerAssign.cshtml" />
     <Content Include="Views\Staffs\Index.cshtml" />
     <Content Include="Views\Staffs\Update.cshtml" />
+    <Content Include="Views\Account\ViewProfile.cshtml" />
+    <Content Include="Views\Account\ViewCourse.cshtml" />
+    <Content Include="Views\Account\ChangePasswordUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

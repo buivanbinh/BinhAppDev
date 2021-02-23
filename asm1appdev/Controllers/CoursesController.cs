@@ -10,8 +10,10 @@ using System.Web.Mvc;
 
 namespace asm1appdev.Controllers
 {
+    [Authorize(Roles = "Staff")]
     public class CoursesController : Controller
     {
+        
         // GET: Courses
         private ApplicationDbContext _context;
         public CoursesController()

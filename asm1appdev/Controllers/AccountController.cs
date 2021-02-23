@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using asm1appdev.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using asm1appdev.ViewModels;
 
 namespace asm1appdev.Controllers
 {
@@ -140,6 +141,7 @@ namespace asm1appdev.Controllers
         //
         // GET: /Account/Register
         /*[Authorize(Roles = "admin,staff")]*/
+        [Authorize(Roles = "Admin,Staff")]
         public ActionResult Register()
         {
             if (User.IsInRole("Admin"))
@@ -152,7 +154,7 @@ namespace asm1appdev.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        /*[Authorize(Roles = "admin,staff")]*/
+        [Authorize(Roles = "Admin,Staff")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -231,7 +233,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
@@ -244,7 +246,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ForgotPassword
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult ForgotPassword(string id)
         {
             var user = _context.Users.Find(id);
@@ -262,7 +264,7 @@ namespace asm1appdev.Controllers
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -290,7 +292,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ForgotPasswordConfirmation
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -298,7 +300,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult ResetPassword(string code, string email)
         {
             return code == null ? View("Error") : View();
@@ -307,7 +309,7 @@ namespace asm1appdev.Controllers
         //
         // POST: /Account/ResetPassword
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -332,7 +334,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult ResetPasswordConfirmation()
         {
             return View();
@@ -488,6 +490,105 @@ namespace asm1appdev.Controllers
             }
 
             base.Dispose(disposing);
+        }
+        public ActionResult ViewProfile()
+        {
+            var userIdCurrent = User.Identity.GetUserId();
+            var userInWeb = _context.Users.SingleOrDefault(u => u.Id == userIdCurrent);
+            if (User.IsInRole("trainer"))
+            {
+                var trainerInWeb = _context.Trainers.SingleOrDefault(t => t.TrainerId == userInWeb.Id);
+                /* var courseTrainer = _context.Courses.SingleOrDefault(c => c.Id == trainerInWeb.CourseId);*/
+                var trainerInfor = new UserProfile()
+                {
+                    UserInWeb = userInWeb,
+                    TrainerInWeb = trainerInWeb
+                };
+                return View(trainerInfor);
+            }
+            if (User.IsInRole("trainee"))
+            {
+                var traineeInWeb = _context.Trainees.SingleOrDefault(t => t.TraineeId == userInWeb.Id);
+                var traineeInfor = new UserProfile()
+                {
+                    UserInWeb = userInWeb,
+                    TraineeInWeb = traineeInWeb
+                };
+                return View(traineeInfor);
+            }
+
+            var userInfor = new UserProfile()
+            {
+                UserInWeb = userInWeb
+            };
+            return View(userInfor);
+
+        }
+        [Authorize(Roles = "Trainer,Trainee")]
+        public ActionResult ViewCourse()
+        {
+            var userIdCurrent = User.Identity.GetUserId();
+            var userInWeb = _context.Users.SingleOrDefault(u => u.Id == userIdCurrent);
+            if (User.IsInRole("Trainer"))
+            {
+                var trainerInWeb = _context.Trainers.SingleOrDefault(t => t.TrainerId == userInWeb.Id);
+                var courseTrainer = _context.Courses.SingleOrDefault(c => c.Id == trainerInWeb.CourseId);
+                var courses = _context.Courses.Include("Category").ToList();
+                var trainerInfor = new UserProfile()
+                {
+                    UserInWeb = userInWeb,
+                    TrainerInWeb = trainerInWeb
+                };
+                return View(courseTrainer);
+            }
+            else if (User.IsInRole("Trainee"))
+            {
+                var traineeInWeb = _context.Trainees.SingleOrDefault(t => t.TraineeId == userInWeb.Id);
+                var courseTrainee = _context.Courses.SingleOrDefault(c => c.Id == traineeInWeb.CourseId);
+                var courses = _context.Courses.Include("Category").ToList();
+                var traineeInfor = new UserProfile()
+                {
+                    UserInWeb = userInWeb,
+                    TraineeInWeb = traineeInWeb
+                };
+                return View(courseTrainee);
+            }
+            return HttpNotFound();
+        }
+        [Authorize(Roles = "Trainer,Trainee")]
+        public ActionResult ChangePasswordUser()
+        {
+            var userIdCurrent = User.Identity.GetUserId();
+            ApplicationUser useInWeb = _context.Users.FirstOrDefault(c => c.Id == userIdCurrent);
+            var userPass = _context.Users.SingleOrDefault(m => m.Id == useInWeb.Id);
+            if (userPass == null) return HttpNotFound();
+            var changePassUser = new ResetPasswordViewModel()
+            {
+                User = useInWeb
+            };
+            return View(changePassUser);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePasswordUser(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var userPass = await UserManager.FindByNameAsync(model.User.UserName);
+            if (userPass == null)
+            {
+                return RedirectToAction("ViewProfile", "Account");
+            }
+            await UserManager.RemovePasswordAsync(userPass.Id);
+            var result = await UserManager.AddPasswordAsync(userPass.Id, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ViewProfile", "Account");
+            }
+            AddErrors(result);
+            return View();
         }
 
         #region Helpers

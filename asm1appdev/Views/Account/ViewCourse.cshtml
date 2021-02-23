@@ -1,0 +1,34 @@
+﻿@model asm1appdev.Models.Course
+@{
+    ViewBag.Title = "ViewCourse";
+}
+
+<h2>View Course user</h2>
+
+@Html.ActionLink("Back to Profile", "ViewProfile", "Account",
+    null,
+    new { @class = "btn btn-primary" })
+@if (Model != null)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name Course</th>
+                <th>Course Description</th>
+                <th>Category Name</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr style="color:black; text-align:center">
+                <td>@Model.Name</td>
+                <td>@Model.Description</td>
+                <td>@Model.Category.Name</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No Course had assigned</h1>
+}

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace asm1appdev.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class StaffsController : Controller
     {
         private ApplicationDbContext _context;

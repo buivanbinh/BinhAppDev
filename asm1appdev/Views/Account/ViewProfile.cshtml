@@ -1,0 +1,66 @@
+﻿@model asm1appdev.ViewModels.UserProfile
+@{
+    ViewBag.Title = "ViewProfile";
+}
+
+@if (User.IsInRole("trainer"))
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Full Name</th>
+                <th>PhoneNumber</th>
+                <th>Type</th>
+                <th>Working Place</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="color:black; text-align:center">
+                <td>@Model.TrainerInWeb.ApplicationUser.UserName</td>
+                <td>@Model.TrainerInWeb.ApplicationUser.FullName</td>
+                <td>@Model.TrainerInWeb.PhoneNumber</td>
+                <td>@Model.TrainerInWeb.Type</td>
+                <td>@Model.TrainerInWeb.WorkingPlace</td>
+                <td>
+                    @Html.ActionLink("Update Profile", "UpdateTrainerProfile", "Account", null,
+                                     new { @class = "btn btn-primary", style = "margin: 10px" })
+                    @Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null,
+                       new { @class = "btn btn-danger", style = "margin: 20px" })
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+}
+@if (User.IsInRole("trainee"))
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User name</th>
+                <th>Full name</th>
+                <th>Age</th>
+                <th>Location</th>
+                <th>Education</th>
+                <th>DayOfBirth</th>
+                <th>ProgramLanguage</th>
+                <th>ToeicScore</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.TraineeInWeb.ApplicationUser.UserName</td>
+                <td>@Model.TraineeInWeb.ApplicationUser.FullName</td>
+                <td>@Model.TraineeInWeb.Age</td>
+                <td>@Model.TraineeInWeb.Location</td>
+                <td>@Model.TraineeInWeb.Education</td>
+                <td>@Model.TraineeInWeb.DayOfBirth</td>
+                <td>@Model.TraineeInWeb.ProgramingLanguage</td>
+                <td>@Model.TraineeInWeb.ToeicScore</td>
+            </tr>
+        </tbody>
+
+    </table>
+}

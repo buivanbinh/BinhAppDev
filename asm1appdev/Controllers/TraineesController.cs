@@ -8,8 +8,10 @@ using System.Web.Mvc;
 
 namespace asm1appdev.Controllers
 {
+    [Authorize(Roles = "Staff")]
     public class TraineesController : Controller
     {
+        
         public ApplicationDbContext _context;
         public TraineesController()
         {
