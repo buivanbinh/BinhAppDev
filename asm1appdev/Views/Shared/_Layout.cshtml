@@ -22,7 +22,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole("staff"))
+                    @if (User.IsInRole("Staff"))
                     {
 
                         <li class="nav-item">@Html.ActionLink("Trainer", "Index", "Trainers", null, new { Style = "color:white" })</li>
@@ -31,21 +31,21 @@
                         <li class="nav-item">@Html.ActionLink("Category", "Index", "Categories", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { Style = "color:white" })</li>
                     }
-                    @if (User.IsInRole("trainer"))
+                    @if (User.IsInRole("Trainer"))
                     {
                         <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourse", "Account", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Profile", "ViewProfile", "Account", null, new { Style = "color:white" })</li>
 
                         <li class="nav-item">@Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null, new { Style = "color:white" })</li>
                     }
-                    @if (User.IsInRole("trainee"))
+                    @if (User.IsInRole("Trainee"))
                     {
                         <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourse", "Account", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Profile", "ViewProfile", "Account", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null, new { Style = "color:white" })</li>
                     }
 
-                    @if (User.IsInRole("admin"))
+                    @if (User.IsInRole("Admin"))
                     {
                         <li class="nav-item">@Html.ActionLink("Account Staff", "Index", "Staffs", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Account Trainer", "Index", "Trainers", null, new { Style = "color:white" })</li>

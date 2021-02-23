@@ -142,10 +142,10 @@ namespace asm1appdev.Controllers
         /*[Authorize(Roles = "admin,staff")]*/
         public ActionResult Register()
         {
-            if (User.IsInRole("admin"))
-                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("staff") || r.Name.Equals("trainer")).ToList();
-            if (User.IsInRole("staff"))
-                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("trainee")).ToList();
+            if (User.IsInRole("Admin"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+            if (User.IsInRole("Staff"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
             return View();
         }
 
@@ -170,27 +170,47 @@ namespace asm1appdev.Controllers
                 if (result.Succeeded)
                 {
                     userManager.AddToRole(user.Id, model.RoleName);
-                    if (model.RoleName == "trainer")
+                    //userManager.AddToRole(user.Id, "Admin");
+                    if (model.RoleName == "Trainer")
                     {
                         var newTrainer = new Trainer();
                         newTrainer.TrainerId = user.Id;
                         _context.Trainers.Add(newTrainer);
                         _context.SaveChanges();
+                        if (User.IsInRole("Admin"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+                        if (User.IsInRole("Staff"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
                         return RedirectToAction("Index", "Trainers");
                     }
-                    else if (model.RoleName == "trainee")
+                    else if (model.RoleName == "Trainee")
                     {
-                        if (User.IsInRole("staff"))
+                        if (User.IsInRole("Staff"))
                         {
                             var newTrainee = new Trainee();
                             newTrainee.TraineeId = user.Id;
                             _context.Trainees.Add(newTrainee);
                             _context.SaveChanges();
+                            if (User.IsInRole("Admin"))
+                                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+                            if (User.IsInRole("Staff"))
+                                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
                             return RedirectToAction("Index", "Trainees");
                         }
+                        if (User.IsInRole("Admin"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+                        if (User.IsInRole("Staff"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
                         return RedirectToAction("Index", "Home");
                     }
-                    else return RedirectToAction("Index", "Home");
+                    else
+                    {
+                        if (User.IsInRole("Admin"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+                        if (User.IsInRole("Staff"))
+                            ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
+                        return RedirectToAction("Index", "Home");
+                    }
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -201,7 +221,10 @@ namespace asm1appdev.Controllers
                 }
                 AddErrors(result);
             }
-
+            if (User.IsInRole("Admin"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
+            if (User.IsInRole("Staff"))
+                ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -222,9 +245,18 @@ namespace asm1appdev.Controllers
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
-        public ActionResult ForgotPassword()
+        public ActionResult ForgotPassword(string id)
         {
-            return View();
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return View();
+            }
+            ForgotPasswordViewModel UserEmail = new ForgotPasswordViewModel()
+            {
+                Email = user.Email
+            };
+            return View(UserEmail);
         }
 
         //
@@ -237,7 +269,7 @@ namespace asm1appdev.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null )
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -245,7 +277,8 @@ namespace asm1appdev.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                return RedirectToAction("ResetPassword", "Account", new { email = model.Email, code = code });
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
@@ -266,7 +299,7 @@ namespace asm1appdev.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string code, string email)
         {
             return code == null ? View("Error") : View();
         }

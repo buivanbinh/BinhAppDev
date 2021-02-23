@@ -18,6 +18,7 @@ namespace asm1appdev.Models
         public string FullName { get; set; }
         public virtual Trainer TrainerUser { get; set; }
         public virtual Trainee TraineeUser { get; set; }
+        public virtual Staff Staff { get; set; }
         public ApplicationUser()
         {
 

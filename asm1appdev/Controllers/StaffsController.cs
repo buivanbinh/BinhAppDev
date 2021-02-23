@@ -1,7 +1,9 @@
 ﻿using asm1appdev.Models;
+using asm1appdev.ViewModels;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -22,57 +24,68 @@ namespace asm1appdev.Controllers
         // GET: Staffs
         public ActionResult Index(string searchInput)
         {
-            var staffs = _context.Staffs.ToList();
-
+            List<ApplicationUser> StaffList = new List<ApplicationUser>();
+            var staffs = _context.Users.ToList();
+            foreach (var item in staffs)
+            {
+                var userTemp = _userManager.GetRoles(item.Id);
+                if (userTemp.FirstOrDefault() == "Staff")
+                {
+                    StaffList.Add(item);
+                }
+            }
             if (!searchInput.IsNullOrWhiteSpace())
             {
-                staffs = _context.Staffs
-                     .Where(s => s.ApplicationUser.FullName.Contains(searchInput))
+                staffs = _context.Users
+                     .Where(s => s.FullName.Contains(searchInput) || s.UserName.Contains(searchInput))
                      .ToList();
+                StaffList.Clear();
+                foreach (var item in staffs)
+                {
+                    var userTemp = _userManager.GetRoles(item.Id);
+                    if (userTemp.FirstOrDefault() == "Staff")
+                    {
+                        StaffList.Add(item);
+                    }
+                }
             }
-            return View(staffs);
+            return View(StaffList);
         }
         public ActionResult Update(string id)
         {
-            var staffInDb = _context.Staffs.SingleOrDefault(t => t.StaffId == id);
-            if (staffInDb == null)
+            StarffViewModel staffViewModel = new StarffViewModel();
+            staffViewModel.ApplicationUser = _context.Users.SingleOrDefault(t => t.Id == id);
+            if (staffViewModel == null)
             {
                 return HttpNotFound();
             }
-            return View(staffInDb);
+            return View(staffViewModel);
         }
         [HttpPost]
-        public ActionResult Update(Staff staff)
+        public ActionResult Update(StarffViewModel staffViewModel)
         {
             if (!ModelState.IsValid)
             {
                 return View();
             }
-            var staffInDb = _context.Staffs.SingleOrDefault(s => s.StaffId == staff.StaffId);
+            var staffInDb = _context.Users.SingleOrDefault(s => s.Id == staffViewModel.ApplicationUser.Id);
             {
-                staffInDb.ApplicationUser.FullName = staff.ApplicationUser.FullName;
-                staffInDb.Location = staff.Location;
-                staffInDb.Age = staff.Age;
-                staffInDb.DayOfBirthday = staff.DayOfBirthday;
+                staffInDb.FullName = staffViewModel.ApplicationUser.FullName;
             }
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
         public ActionResult Delete(string id)
         {
-            var userInDb = _context.Users.SingleOrDefault(u => u.Id == id);
-            var staffInDb = _context.Staffs.SingleOrDefault(s => s.StaffId == id);
-            if (userInDb == null)
-            {
-
-                return HttpNotFound();
-            }
+           
+            var staffInDb = _context.Users.SingleOrDefault(s => s.Id == id);
+          
             if (staffInDb == null)
             {
                 return HttpNotFound();
             }
-            _context.Staffs.Remove(staffInDb);
-            _context.Users.Remove(userInDb);
+           
+            _context.Users.Remove(staffInDb);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

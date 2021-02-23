@@ -23,6 +23,53 @@ namespace asm1appdev.Migrations
             //  to avoid creating duplicate seed data.
             /*CreateUser(context, "admin@mail.com", "123");
             AddUserToRole(context, "admin@mail.com", "admin");*/
+            if (!context.Roles.Any(r => r.Name == "Admin"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Admin" };
+
+                manager.Create(role);
+            }
+            if (!context.Roles.Any(r => r.Name == "Staff"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Staff" };
+
+                manager.Create(role);
+            }
+            if (!context.Roles.Any(r => r.Name == "Trainer"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Trainer" };
+
+                manager.Create(role);
+            }
+            if (!context.Roles.Any(r => r.Name == "Trainee"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "Trainee" };
+
+                manager.Create(role);
+            }
+
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var PasswordHash = new PasswordHasher();
+            if (!context.Users.Any(u => u.UserName == "admin@mail.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "admin@mail.com",
+                    Email = "admin@mail.com",
+                    PasswordHash = PasswordHash.HashPassword("Admin123@")
+                };
+
+                UserManager.Create(user);
+                UserManager.AddToRole(user.Id, "Admin");
+            }
         }
         private void CreateUser(ApplicationDbContext context,
             string email, string password)

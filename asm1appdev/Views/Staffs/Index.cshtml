@@ -1,4 +1,4 @@
-﻿@model IEnumerable<asm1appdev.Models.Staff>
+﻿@model IEnumerable<asm1appdev.Models.ApplicationUser>
 @{ ViewBag.Title = "Index";
 }
 
@@ -18,8 +18,7 @@
         <tr>
             <th>E-mail</th>
             <th>Full name</th>
-            <th>Age</th>
-            <th>Location</th>
+            
             <th>Actions</th>
         </tr>
     </thead>
@@ -27,19 +26,17 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.ApplicationUser.UserName</td>
-                <td>@item.ApplicationUser.FullName</td>
-                <td>@item.Age</td>
-                <td>@item.Location</td>
+                <td>@item.UserName</td>
+                <td>@item.FullName</td>
                 <td>
                     @Html.ActionLink("Edit profile", "Update", "Staffs",
-                                                          new { id = item.StaffId },
+                                                          new { id = item.Id },
                                                           new { @class = "btn btn-danger", style = "margin :10px" })
                     @Html.ActionLink("Delete staff account", "Delete", "Staffs",
-                                                          new { id = item.StaffId },
+                                                          new { id = item.Id },
                                                           new { @class = "btn btn-primary", style = "margin :10px" })
-                    @Html.ActionLink("Reset & enter new password", "ResetPassword", "Account",
-                                                          new { id = item.ApplicationUser.Id },
+                    @Html.ActionLink("Reset & enter new password", "ForgotPassword", "Account",
+                                                          new { id = item.Id },
                                                           new { @class = "btn btn-danger", style = "margin :10px" })
                 </td>
             </tr>
