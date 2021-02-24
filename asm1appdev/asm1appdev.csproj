@@ -176,6 +176,7 @@
     <Compile Include="Controllers\StaffsController.cs" />
     <Compile Include="Controllers\TraineesController.cs" />
     <Compile Include="Controllers\TrainersController.cs" />
+    <Compile Include="Controllers\ViewProfileController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -313,6 +314,9 @@
     <Content Include="Views\Account\ViewProfile.cshtml" />
     <Content Include="Views\Account\ViewCourse.cshtml" />
     <Content Include="Views\Account\ChangePasswordUser.cshtml" />
+    <Content Include="Views\ViewProfile\ViewProfile.cshtml" />
+    <Content Include="Views\ViewProfile\ViewCourse.cshtml" />
+    <Content Include="Views\ViewProfile\ChangePasswordUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
