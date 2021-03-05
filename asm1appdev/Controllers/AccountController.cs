@@ -17,22 +17,22 @@ namespace asm1appdev.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationDbContext _context;
+        private ApplicationDbContext _context;// biến cục bộ để dùng cho class
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        public AccountController() //Contructor được khởi tạo đầu tiên khi mà chúng ta tạo class đó
         {
             _context = new ApplicationDbContext();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager ) //dependency injection
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public ApplicationSignInManager SignInManager // chốt cửa trung gian cho thằng get set  private..
         {
             get
             {
@@ -58,7 +58,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/Login
-        [AllowAnonymous]
+        [AllowAnonymous] // bất cứ ai cũng vào được
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -155,7 +155,7 @@ namespace asm1appdev.Controllers
         // POST: /Account/Register
         [HttpPost]
         [Authorize(Roles = "Admin,Staff")]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]// để xác nhận là from chính do admin gởi về
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -179,7 +179,7 @@ namespace asm1appdev.Controllers
                         newTrainer.TrainerId = user.Id;
                         _context.Trainers.Add(newTrainer);
                         _context.SaveChanges();
-                        if (User.IsInRole("Admin"))
+                        if (User.IsInRole("Admin"))  // trong view của em có một drodownlist nên khi em reset lại view đó thông qu hàm dưới nên em cần cung cấp lại dữ liệu . nên cần
                             ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Staff") || r.Name.Equals("Trainer")).ToList();
                         if (User.IsInRole("Staff"))
                             ViewBag.Name = _context.Roles.Where(r => r.Name.Equals("Trainee")).ToList();
@@ -279,7 +279,7 @@ namespace asm1appdev.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id); // em sẽ truyền về thằng resetpassword 1 cái mail và 1 cái token 
                 return RedirectToAction("ResetPassword", "Account", new { email = model.Email, code = code });
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
@@ -300,7 +300,7 @@ namespace asm1appdev.Controllers
 
         //
         // GET: /Account/ResetPassword
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")] // có admin mới làm được chức năng này gọi action
         public ActionResult ResetPassword(string code, string email)
         {
             return code == null ? View("Error") : View();

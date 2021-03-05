@@ -1,4 +1,4 @@
-﻿@model asm1appdev.Models.Course
+﻿@model IEnumerable<asm1appdev.Models.Course>
 @{
     ViewBag.Title = "ViewCourse";
 }
@@ -19,11 +19,14 @@
             </tr>
         </thead>
         <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="color:black; text-align:center">
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
 
-            <tr style="color:black; text-align:center">
-                <td>@Model.Name</td>
-                <td>@Model.Description</td>
-            </tr>
         </tbody>
     </table>
 }

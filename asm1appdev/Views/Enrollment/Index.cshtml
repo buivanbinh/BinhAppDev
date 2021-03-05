@@ -1,0 +1,29 @@
+﻿@model IEnumerable<asm1appdev.Models.Course>
+@{ ViewBag.Title = "Index";
+}
+
+<h2>Course list</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>
+                    @Html.ActionLink("Enroll", "Trainee", "Enrollment",
+                                                          new { id = item.Id },
+                                                          new { @class = "btn btn-danger", style = "margin :10px" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

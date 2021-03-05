@@ -3,7 +3,7 @@
     ViewBag.Title = "ViewProfile";
 }
 
-@if (User.IsInRole("trainer"))
+@if (User.IsInRole("Trainer"))
 {
     <table class="table table-bordered">
         <thead>
@@ -34,7 +34,7 @@
 
     </table>
 }
-@if (User.IsInRole("trainee"))
+@if (User.IsInRole("Trainee"))
 {
     <table class="table table-bordered">
         <thead>

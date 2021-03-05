@@ -15,7 +15,7 @@ namespace asm1appdev.Models
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Trainee> Trainees { get; set; }
         public DbSet<Staff> Staffs { get; set; }
-
+        public DbSet<Enrollment> Enrollments { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

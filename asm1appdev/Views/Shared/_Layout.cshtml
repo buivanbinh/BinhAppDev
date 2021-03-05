@@ -30,6 +30,8 @@
                         <li class="nav-item">@Html.ActionLink("Course", "Index", "Courses", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Category", "Index", "Categories", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Enroll", "Index", "Enrollment", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("Overview", "Index", "Overview", null, new { Style = "color:white" })</li>
                     }
                     @if (User.IsInRole("Trainer"))
                     {
@@ -40,7 +42,7 @@
                     }
                     @if (User.IsInRole("Trainee"))
                     {
-                        <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourse", "ViewProfile", null, new { Style = "color:white" })</li>
+                        <li class="nav-item">@Html.ActionLink("View Assigned Course", "ViewCourseTrainee", "ViewProfile", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Profile", "ViewProfile", "ViewProfile", null, new { Style = "color:white" })</li>
                         <li class="nav-item">@Html.ActionLink("Change Password", "ChangePasswordUser", "Account", null, new { Style = "color:white" })</li>
                     }

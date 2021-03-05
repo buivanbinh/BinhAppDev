@@ -1,0 +1,34 @@
+﻿@model IEnumerable<asm1appdev.Models.ApplicationUser>
+@{ ViewBag.Title = "Index";
+    var Idcourse = ViewBag.ID;
+}
+
+<h2>Trainee List</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Full name</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.FullName</td>
+                <td>
+                    @Html.ActionLink("Enroll", "Enroll", "Enrollment",
+                                                           new { traineeid = item.Id, courseid = Idcourse },
+                                                           new { @class = "btn btn-success", style = "margin :10px" })
+                    @Html.ActionLink("Delete", "Delete", "Enrollment",
+                                                           new { traineeid = item.Id, courseid = Idcourse },
+                                                           new { @class = "btn btn-danger", style = "margin :10px" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

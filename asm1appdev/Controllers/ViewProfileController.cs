@@ -63,28 +63,44 @@ namespace asm1appdev.Controllers
             {
                 var trainerInWeb = _context.Trainers.SingleOrDefault(t => t.TrainerId == userInWeb.Id);
                 var courseTrainer = _context.Courses.SingleOrDefault(c => c.Id == trainerInWeb.CourseId);
-                var courses = _context.Courses.Include("Category").ToList();
-                var trainerInfor = new UserProfile()
-                {
-                    UserInWeb = userInWeb,
-                    TrainerInWeb = trainerInWeb
-                };
+                
                 return View(courseTrainer);
             }
             else if (User.IsInRole("Trainee"))
             {
-                var traineeInWeb = _context.Trainees.SingleOrDefault(t => t.TraineeId == userInWeb.Id);
-                var courseTrainee = _context.Courses.SingleOrDefault(c => c.Id == traineeInWeb.CourseId);
-                var courses = _context.Courses.Include("Category").ToList();
-                var traineeInfor = new UserProfile()
+                var CourseIDList = _context.Enrollments.Where(e => e.TraineeId == userIdCurrent).ToList();
+                List<Course> Courses = new List<Course>();
+                foreach (var Id in CourseIDList)
                 {
-                    UserInWeb = userInWeb,
-                    TraineeInWeb = traineeInWeb
-                };
-                return View(courseTrainee);
+                    var trainee = _context.Courses.Find(Id.CourseId);
+                    if (trainee != null)
+                    {
+                        Courses.Add(trainee);
+                    }
+                }
+                return View(Courses);
             }
             return HttpNotFound();
         }
-        
+        public ActionResult ViewCourseTrainee()
+        {
+            var userIdCurrent = User.Identity.GetUserId();
+            var userInWeb = _context.Users.SingleOrDefault(u => u.Id == userIdCurrent);
+            if (User.IsInRole("Trainee"))
+            {
+                var CourseIDList = _context.Enrollments.Where(e => e.TraineeId == userIdCurrent).ToList();
+                List<Course> Courses = new List<Course>();
+                foreach (var Id in CourseIDList)
+                {
+                    var trainee = _context.Courses.Find(Id.CourseId);
+                    if (trainee != null)
+                    {
+                        Courses.Add(trainee);
+                    }
+                }
+                return View(Courses);
+            }
+            return HttpNotFound();
+        }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<asm1appdev.Models.ApplicationUser>
+@{ ViewBag.Title = "Index";
+}
+
+<h2>Trainee List</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>E-mail</th>
+            <th>Full name</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.FullName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
